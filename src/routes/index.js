@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import projectsRouter from './projects/index.js';
+import projectsRouter from './projects/projects.router.js';
 
 const router = Router();
 
