@@ -1,8 +1,8 @@
-import Project from '../models/project.model.js';
+import Project from '../../models/project.model.js';
 import {
   getProjects,
   getProjectByName,
-} from '../routes/projects/projects.controller.js';
+} from '../../routes/projects/projects.controller.js';
 
 jest.mock('../models/project.model.js');
 
