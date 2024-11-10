@@ -2,10 +2,13 @@ import express from 'express';
 import morgan from 'morgan';
 import routes from './routes/index.js';
 import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+import { MAX_BODY_SIZE } from './config/server.config.js';
 
 const app = express();
 
 app.use(morgan('dev'));
+app.use(bodyParser.json({ limit: MAX_BODY_SIZE }));
 
 app.use('/api', routes);
 
