@@ -4,9 +4,15 @@ import routes from './routes/index.js';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import { MAX_BODY_SIZE } from './config/server.config.js';
+import cors from 'cors';
 
 const app = express();
+const corsOptions = {
+  origin: 'http://localhost:4200',
+  optionsSuccessStatus: 200,
+};
 
+app.use(cors(corsOptions));
 app.use(morgan('dev'));
 app.use(bodyParser.json({ limit: MAX_BODY_SIZE }));
 
