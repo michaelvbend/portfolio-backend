@@ -4,7 +4,7 @@ import {
   getProjectByName,
 } from '../../routes/projects/projects.controller.js';
 
-jest.mock('../models/project.model.js');
+jest.mock('../../models/project.model.js');
 
 const mockRequest = {
   method: 'GET',
