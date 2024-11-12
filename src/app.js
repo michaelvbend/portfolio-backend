@@ -3,22 +3,16 @@ import morgan from 'morgan';
 import routes from './routes/index.js';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import { MAX_BODY_SIZE } from './config/server.config.js';
+import { corsOptions, MAX_BODY_SIZE, port } from './config/server.config.js';
 import cors from 'cors';
 
 const app = express();
-const corsOptions = {
-  origin: 'http://localhost:4200',
-  optionsSuccessStatus: 200,
-};
 
 app.use(cors(corsOptions));
 app.use(morgan('dev'));
 app.use(bodyParser.json({ limit: MAX_BODY_SIZE }));
 
 app.use('/api', routes);
-
-const port = 3000;
 
 const uri =
   'mongodb+srv://mvanderbend:AXTw6viBVDMoyhKc@cluster0.tweuo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
