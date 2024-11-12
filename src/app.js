@@ -17,9 +17,10 @@ app.use('/api', routes);
 const uri =
   'mongodb+srv://mvanderbend:AXTw6viBVDMoyhKc@cluster0.tweuo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
+const mongoDbUri = process.env.MONGODB_URI || uri;
 async function connectToDatabase() {
   try {
-    await mongoose.connect(uri);
+    await mongoose.connect(MONGODB_URI);
     console.log('Connected to MongoDB');
   } catch (err) {
     console.error('Failed to connect to MongoDB', err);

@@ -1,9 +1,10 @@
 import nodemailer from 'nodemailer';
 import { TransportConfig } from '../../config/email-transport.config.js';
 
-const transporter = nodemailer.createTransport(TransportConfig);
+export const createTransporter = () =>
+  nodemailer.createTransport(TransportConfig);
 
-export async function sendEmail(req, res) {
+export async function sendEmail(req, res, transporter = createTransporter()) {
   const { name, email, company, message } = req.body;
   const isValidEmail = validateEmail(email);
 
@@ -16,18 +17,16 @@ export async function sendEmail(req, res) {
   }
 
   const emailTemplate = generateEmailTemplate(email, name, company, message);
-  handleSendEmail(emailTemplate, res);
+  handleSendEmail(emailTemplate, res, transporter);
 }
 
-function handleSendEmail(emailTemplate, res) {
+function handleSendEmail(emailTemplate, res, transporter) {
   transporter.sendMail(emailTemplate, (error, info) => {
     if (error) {
-      console.log('Error:', error);
       return res.status(500).json({
         message: 'Failed to send email due to server error.',
       });
     }
-    console.log('Email sent: ' + info.response);
     return res.status(200).json({
       status: 'success',
       message: 'Email successfully sent',
