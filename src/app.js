@@ -20,7 +20,7 @@ const uri =
 const mongoDbUri = process.env.MONGODB_URI || uri;
 async function connectToDatabase() {
   try {
-    await mongoose.connect(MONGODB_URI);
+    await mongoose.connect(mongoDbUri);
     console.log('Connected to MongoDB');
   } catch (err) {
     console.error('Failed to connect to MongoDB', err);
