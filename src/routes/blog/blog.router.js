@@ -1,10 +1,14 @@
 import { Router } from 'express';
-import { getBlogArticle, getBlogArticles } from './blog.controller.js';
+import {
+  createBlogArticle,
+  getBlogArticleBySlug,
+  getBlogArticles,
+} from './blog.controller.js';
 
 const router = Router();
 
 router.get('/', getBlogArticles);
-router.get('/:slug', getBlogArticle);
-router.post('/');
+router.get('/:slug', getBlogArticleBySlug);
+router.post('/', createBlogArticle);
 
 export default router;

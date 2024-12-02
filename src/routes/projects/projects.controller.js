@@ -10,10 +10,10 @@ export async function getProjects(req, res) {
   }
 }
 
-export async function getProjectByName(req, res) {
-  const { name } = req.params;
+export async function getProjectBySlug(req, res) {
+  const { slug } = req.params;
   try {
-    const project = await Project.findByName(name);
+    const project = await Project.findBySlug(slug);
     project.length > 0
       ? res.send(project)
       : res.status(404).send({ message: 'No project found' });

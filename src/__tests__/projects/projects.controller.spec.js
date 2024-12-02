@@ -1,7 +1,7 @@
 import Project from '../../models/project.model.js';
 import {
   getProjects,
-  getProjectByName,
+  getProjectBySlug,
 } from '../../routes/projects/projects.controller.js';
 
 jest.mock('../../models/project.model.js');
@@ -9,7 +9,7 @@ jest.mock('../../models/project.model.js');
 const mockRequest = {
   method: 'GET',
   params: {
-    name: 'Project 1',
+    slug: 'project-1',
   },
 };
 
@@ -29,15 +29,12 @@ describe('Get all projects', () => {
     expect(mockResponse.send).toHaveBeenCalledWith(mockProjects);
   });
 
-  it('should return 404 when no projects are found', async () => {
+  it('should return empty list when no projects are found', async () => {
     Project.find.mockResolvedValue([]);
 
     await getProjects(mockRequest, mockResponse);
 
-    expect(mockResponse.send).toHaveBeenCalledWith({
-      message: 'No projects found',
-    });
-    expect(mockResponse.status).toHaveBeenCalledWith(404);
+    expect(mockResponse.send).toHaveBeenCalledWith([]);
   });
 
   it('should return 500 on error', async () => {
@@ -53,25 +50,25 @@ describe('Get all projects', () => {
   });
 });
 
-describe('Get project by name', () => {
-  it('should return project when found by name', async () => {
-    const projectName = 'Project 1';
+describe('Get project by slug', () => {
+  it('should return project when found by slug', async () => {
+    const projectSlug = 'project-1';
     const mockProjects = [{ name: 'Project 1' }];
 
-    Project.findByName.mockResolvedValue(mockProjects);
-    await getProjectByName(mockRequest, mockResponse);
+    Project.findBySlug.mockResolvedValue(mockProjects);
+    await getProjectBySlug(mockRequest, mockResponse);
 
-    expect(Project.findByName).toHaveBeenCalledWith(projectName);
+    expect(Project.findBySlug).toHaveBeenCalledWith(projectSlug);
     expect(mockResponse.send).toHaveBeenCalledWith(mockProjects);
   });
 
   it('should return 404 when no projects are found', async () => {
-    Project.findByName.mockResolvedValue([]);
+    Project.findBySlug.mockResolvedValue([]);
 
-    await getProjectByName(mockRequest, mockResponse);
+    await getProjectBySlug(mockRequest, mockResponse);
 
     expect(mockResponse.send).toHaveBeenCalledWith({
-      message: 'No projects found',
+      message: 'No project found',
     });
     expect(mockResponse.status).toHaveBeenCalledWith(404);
   });

@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const ProjectSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
+    slug: String,
     description: String,
     imgUrl: String,
     techStack: [String],
@@ -14,8 +15,8 @@ const ProjectSchema = new mongoose.Schema(
   }
 );
 
-ProjectSchema.statics.findByName = function (name) {
-  return this.find({ name: name });
+ProjectSchema.statics.findBySlug = function (slug) {
+  return this.find({ slug });
 };
 
 const Project = mongoose.model('Project', ProjectSchema);

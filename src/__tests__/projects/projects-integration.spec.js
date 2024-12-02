@@ -46,24 +46,25 @@ describe('Projects API Integration Tests', () => {
     expect(response.body[1].name).toBe('Project 2');
   });
 
-  it('should fetch project by name', async () => {
+  it('should fetch project by slug', async () => {
     const project1 = new Project({
       name: 'Project 1',
+      slug: 'project-1',
       description: 'Description 1',
     });
     await project1.save();
 
-    const response = await request(app).get('/api/projects/Project 1');
+    const response = await request(app).get('/api/projects/project-1');
     expect(response.status).toBe(200);
     expect(response.body).toHaveLength(1);
     expect(response.body[0].name).toBe('Project 1');
   });
 
-  it('should return 404 if no projects are found', async () => {
+  it('should return empty list if no projects are found', async () => {
     const response = await request(app).get('/api/projects');
 
-    expect(response.status).toBe(404);
-    expect(response.body.message).toBe('No projects found');
+    expect(response.status).toBe(200);
+    expect(response.body).toStrictEqual([]);
   });
 
   it('should return 500 if project with duplicate name is being saved', async () => {
