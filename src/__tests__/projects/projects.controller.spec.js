@@ -1,4 +1,4 @@
-import Project from '../../models/project.model.js';
+import Project from '../../api/models/project.model.js';
 import {
   getProjects,
   getProjectBySlug,

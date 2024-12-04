@@ -5,9 +5,9 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node ./src/app.js",
+    "build": "node ./src/api/index.js",
     "test": "jest",
-    "dev": "nodemon ./src/app.js"
+    "dev": "nodemon ./src/api/index.js"
   },
   "keywords": [],
   "author": "",

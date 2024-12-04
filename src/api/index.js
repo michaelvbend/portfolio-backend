@@ -14,8 +14,7 @@ app.use(bodyParser.json({ limit: MAX_BODY_SIZE }));
 
 app.use('/api', routes);
 
-const uri =
-  'mongodb+srv://mvanderbend:AXTw6viBVDMoyhKc@cluster0.tweuo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const uri = process.env.MONGODB_URI;
 
 const mongoDbUri = process.env.MONGODB_URI || uri;
 async function connectToDatabase() {
@@ -27,16 +26,14 @@ async function connectToDatabase() {
     process.exit(1);
   }
 }
-
-function startServer() {
-  app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
-  });
-}
-
 async function startApp() {
   await connectToDatabase();
-  startServer();
 }
 
 startApp();
+
+app.listen(port, () => {
+  console.log(`App listening on port ${port}`);
+});
+
+export default app;

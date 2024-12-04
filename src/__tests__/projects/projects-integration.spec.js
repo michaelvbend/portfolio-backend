@@ -3,7 +3,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import request from 'supertest';
 import express from 'express';
 import routes from '../../routes/index.js';
-import Project from '../../models/project.model.js';
+import Project from '../../api/models/project.model.js';
 
 let mongoServer;
 const app = express();
