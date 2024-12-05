@@ -1,30 +1,33 @@
 import nodemailer from 'nodemailer';
 import { TransportConfig } from '../../config/email-transport.config.js';
 
-const transporter = nodemailer.createTransport(TransportConfig);
+export const createTransporter = () =>
+  nodemailer.createTransport(TransportConfig);
 
-export async function sendEmail(req, res, customTransporter = transporter) {
+export async function sendEmail(req, res, transporter = createTransporter()) {
   const { name, email, company, message } = req.body;
   const isValidEmail = validateEmail(email);
+
   if (!name || !email || !company || !message) {
     return res.status(400).json({ message: 'All fields are required' });
   }
+
   if (!isValidEmail) {
     return res.status(400).json({ message: 'No supported email format.' });
   }
+
   const emailTemplate = generateEmailTemplate(email, name, company, message);
-  handleSendEmail(emailTemplate, res, customTransporter);
+  handleSendEmail(emailTemplate, res, transporter);
 }
 
-function handleSendEmail(emailTemplate, res, customTransporter) {
-  customTransporter.sendMail(emailTemplate, (error, info) => {
+function handleSendEmail(emailTemplate, res, transporter) {
+  transporter.sendMail(emailTemplate, (error, info) => {
     if (error) {
-      console.log('Error:', error);
+      console.error('Error sending email:', error);
       return res.status(500).json({
         message: 'Failed to send email due to server error.',
       });
     }
-    console.log('Email sent: ' + info.response);
     return res.status(200).json({
       status: 'success',
       message: 'Email successfully sent',
@@ -42,6 +45,6 @@ function generateEmailTemplate(email, name, company, message) {
     from: email,
     to: 'mvanderbend@gmail.com',
     subject: 'Portfolio contact form submission',
-    text: `From: ${name}\nIn: ${company}\nmessage: ${message}`,
+    text: `From: ${name}\nIn: ${company}\nMessage: ${message}`,
   };
 }
