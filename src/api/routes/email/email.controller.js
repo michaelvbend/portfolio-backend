@@ -3,7 +3,7 @@ import { TransportConfig } from '../../config/email-transport.config.js';
 
 const transporter = nodemailer.createTransport(TransportConfig);
 
-export async function sendEmail(req, res) {
+export async function sendEmail(req, res, customTransporter = transporter) {
   const { name, email, company, message } = req.body;
   const isValidEmail = validateEmail(email);
   if (!name || !email || !company || !message) {
@@ -13,11 +13,11 @@ export async function sendEmail(req, res) {
     return res.status(400).json({ message: 'No supported email format.' });
   }
   const emailTemplate = generateEmailTemplate(email, name, company, message);
-  handleSendEmail(emailTemplate, res);
+  handleSendEmail(emailTemplate, res, customTransporter);
 }
 
-function handleSendEmail(emailTemplate, res) {
-  transporter.sendMail(emailTemplate, (error, info) => {
+function handleSendEmail(emailTemplate, res, customTransporter) {
+  customTransporter.sendMail(emailTemplate, (error, info) => {
     if (error) {
       console.log('Error:', error);
       return res.status(500).json({

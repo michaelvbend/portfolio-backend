@@ -2,9 +2,9 @@ import Project from '../../api/models/project.model.js';
 import {
   getProjects,
   getProjectBySlug,
-} from '../../routes/projects/projects.controller.js';
+} from '../../api/routes/projects/projects.controller.js';
 
-jest.mock('../../models/project.model.js');
+jest.mock('../../api/models/project.model.js');
 
 const mockRequest = {
   method: 'GET',

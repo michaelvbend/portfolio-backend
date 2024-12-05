@@ -1,4 +1,4 @@
-import { sendEmail } from '../../routes/email/email.controller.js';
+import { sendEmail } from '../../api/routes/email/email.controller.js';
 import nodemailer from 'nodemailer';
 import { jest } from '@jest/globals';
 
@@ -31,7 +31,7 @@ describe('sendEmail', () => {
 
   it('should return 400 if any field is missing', async () => {
     req.body.name = '';
-    await sendEmail(req, res);
+    await sendEmail(req, res, transporter);
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledWith({
       message: 'All fields are required',
@@ -40,7 +40,7 @@ describe('sendEmail', () => {
 
   it('should return 400 if email format is invalid', async () => {
     req.body.email = 'invalid-email';
-    await sendEmail(req, res);
+    await sendEmail(req, res, transporter);
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledWith({
       message: 'No supported email format.',
@@ -51,7 +51,7 @@ describe('sendEmail', () => {
     transporter.sendMail.mockImplementation((data, callback) => {
       callback(new Error('Failed to send email'));
     });
-    await sendEmail(req, res);
+    await sendEmail(req, res, transporter);
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({
       message: 'Failed to send email due to server error.',
@@ -62,7 +62,7 @@ describe('sendEmail', () => {
     transporter.sendMail.mockImplementation((data, callback) => {
       callback(null, { response: 'Email sent' });
     });
-    await sendEmail(req, res);
+    await sendEmail(req, res, transporter);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       status: 'success',
