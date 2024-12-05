@@ -1,10 +1,9 @@
 import nodemailer from 'nodemailer';
 import { TransportConfig } from '../../config/email-transport.config.js';
 
-export const createTransporter = () =>
-  nodemailer.createTransport(TransportConfig);
+export async function sendEmail(req, res) {
+  transporter = nodemailer.createTransport(TransportConfig);
 
-export async function sendEmail(req, res, transporter = createTransporter()) {
   const { name, email, company, message } = req.body;
   const isValidEmail = validateEmail(email);
 
